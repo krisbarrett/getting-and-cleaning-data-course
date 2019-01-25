@@ -15,7 +15,7 @@ activities <- read.delim("./data/activity_labels.txt", header=FALSE,  sep=" ",
                          col.names=c("idx" , "labels"), as.is=TRUE)
 
 # The following function is used to fetch the training/test data
-# path1 is the path to the dataset
+# path1 is the path to the dataset, which I gziped to meet GitHub's file size guidelines
 # path2 is the path to the lables
 # path3 is the path to the subjects
 # idx is a vector containing the column indices of interest 
@@ -23,7 +23,8 @@ activities <- read.delim("./data/activity_labels.txt", header=FALSE,  sep=" ",
 # acts is a data frame containing the mapping of integers to activity labels
 getData <- function(path1, path2, path3, idx, labels, acts) {
   # Read data set and activity labels
-  data <- read.table(path1, header=FALSE, nrows=-1)
+  con <- gzfile(path1)
+  data <- read.table(con, header=FALSE, nrows=-1)
   activities <- read.table(path2, header=FALSE, col.name=c("activity"), nrows=-1)
   subjects <- read.table(path3, header=FALSE, col.name=c("subject"), nrows=-1)
   
@@ -46,9 +47,9 @@ getData <- function(path1, path2, path3, idx, labels, acts) {
 
 
 # Get data for training and test, join them together using rbind
-measurements <- rbind(getData("./data/test/X_test.txt", "./data/test/y_test.txt", 
+measurements <- rbind(getData("./data/test/X_test.txt.gz", "./data/test/y_test.txt", 
                       "./data/test/subject_test.txt", fidx, flabels, activities), 
-                      getData("./data/train/X_train.txt", "./data/train/y_train.txt", 
+                      getData("./data/train/X_train.txt.gz", "./data/train/y_train.txt", 
                       "./data/train/subject_train.txt", fidx, flabels, activities))
 
 # Output tidy data
