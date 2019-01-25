@@ -22,7 +22,7 @@ activities <- read.delim("./data/activity_labels.txt", header=FALSE,  sep=" ",
 # labels is a vector containing the labels for the columns
 # acts is a data frame containing the mapping of integers to activity labels
 getData <- function(path1, path2, path3, idx, labels, acts) {
-  # Read data set and activity labels
+  # Read data set, activity labels, and subjects
   con <- gzfile(path1)
   data <- read.table(con, header=FALSE, nrows=-1)
   activities <- read.table(path2, header=FALSE, col.name=c("activity"), nrows=-1)
@@ -34,6 +34,8 @@ getData <- function(path1, path2, path3, idx, labels, acts) {
   
   # Apply activities
   data$activity <- activities$activity
+  
+  # Replace the activity identifier with a descriptive label
   for(i in 1:nrow(data)) {
     idx <- data[i,"activity"]
     data[i,"activity"] <- acts[idx,"labels"]
@@ -55,18 +57,25 @@ measurements <- rbind(getData("./data/test/X_test.txt.gz", "./data/test/y_test.t
 # Output tidy data
 write.csv(measurements, "measurements.csv")
 
-# create a second tidy data set for the averages
+# create a second tidy data set for the averages, grouped by activity
 activity <- unique(measurements$activity)
 byActivity <- data.frame(row.names=activity)
+
+# For each column, get the mean for each activity
 for(col in flabels) {
   byActivity[[col]] <- tapply(measurements[,col], measurements$activity, mean)
 }
+
+# Also group by subject
 subject <- unique(measurements$subject)
 bySubject <- data.frame(row.names=subject)
+
+# For each column, get the mean for each subject
 for(col in flabels) {
   bySubject[[col]] <- tapply(measurements[,col], measurements$subject, mean)
 }
 
+# Join the two groupings together using rbind
 averages <- rbind(byActivity, bySubject)
 
 # Output second tidy data set
