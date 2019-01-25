@@ -8,6 +8,7 @@ This script creates a tidy data set from the "Human Activity Recognition Using S
 - `run_analysis.R`: Script used to transform the original data set into measurements.csv and averages.csv.  See "Analysis" below for more details.
 - `measurements.csv`: All test and training set meesurements combined into a single file including descriptive labels for activities and numeric labels for subjects.  See [CodeBook.md](https://github.com/krisbarrett/getting-and-cleaning-data-course/blob/master/CodeBook.md) for more information.  
 - `averages.csv`: Averages all measurements from measurements.csv grouped by activity and subject. See [CodeBook.md](https://github.com/krisbarrett/getting-and-cleaning-data-course/blob/master/CodeBook.md) for more information.
+- `CodeBook.md`: Provides a description of the variables in the data set.
 
 ## Analysis
 
