@@ -58,8 +58,8 @@ measurements <- rbind(getData("./data/test/X_test.txt.gz", "./data/test/y_test.t
 write.csv(measurements, "measurements.csv")
 
 # create a second tidy data set for the averages, grouped by activity
-activity <- unique(measurements$activity)
-byActivity <- data.frame(row.names=activity)
+names <- unique(measurements$activity)
+byActivity <- data.frame(names, row.names=names)
 
 # For each column, get the mean for each activity
 for(col in flabels) {
@@ -67,8 +67,8 @@ for(col in flabels) {
 }
 
 # Also group by subject
-subject <- unique(measurements$subject)
-bySubject <- data.frame(row.names=subject)
+names <- as.character(unique(measurements$subject))
+bySubject <- data.frame(names, row.names=names)
 
 # For each column, get the mean for each subject
 for(col in flabels) {
@@ -80,4 +80,7 @@ averages <- rbind(byActivity, bySubject)
 
 # Output second tidy data set
 write.csv(averages, "averages.csv")
+
+# Also write as a txt file per the submission instructions
+write.table(averages, "averages.txt", row.names = FALSE)
 
